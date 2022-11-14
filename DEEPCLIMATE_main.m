@@ -68,12 +68,23 @@ try
     %Open a screen if not provided
         PsychDefaultSetup(2);
         screens          = Screen('Screens');
-        screenNumber     = max(screens);
         Screen('Preference', 'SkipSyncTests', 1); %Skip sync tests: yes
         Screen('Preference', 'VisualDebugLevel', 3); %Visual debug level
         Screen('Preference', 'SuppressAllWarnings', 1);
+        
+        [~, hostname] = system('hostname'); % get the name of the PC
+        hostname   = deblank(hostname);
+       
         KbName('UnifyKeyNames'); %unify across platforms
-        window = Screen('OpenWindow',1,exp_settings.backgrounds.default); %0 for Windows Desktop screen
+        
+        switch hostname
+            case 'DELLFBA7'  % CENIR PROJECTOR
+                screenNumber = 1; 
+            case 'ICM-PESSI-WF005'
+                screenNumber = max(screens);
+        end %switch hostname
+               
+        window = Screen('OpenWindow',screenNumber,exp_settings.backgrounds.default); %1 for CENIR, max screen for WF-005
         Screen(window,'BlendFunction',GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); %for the Alpha transparency values to take effect
         HideCursor  
         
