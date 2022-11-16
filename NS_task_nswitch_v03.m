@@ -50,7 +50,7 @@ else
 end
 
 ns.timestamp = datestr(now, 30);
-savewhere    = [pr.path.nswitch filesep 'nswitch_' condition '_' pr.fname '_' num2str(sessnum)];
+savewhere = sprintf('%snswitch_%s_%s_sess_%03i.mat',pr.path.nswitch , condition, pr.fname, sessnum);
 
 %% TASK SWITCHING
 % =========================================================================

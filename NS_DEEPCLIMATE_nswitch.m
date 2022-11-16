@@ -11,7 +11,7 @@ pr = [];  % anything parameter related
 tm = [];  % anything timing related
 tr = [];  % anything trial related
 
-pr.debug                        = 1;  % PTB debug configuration1
+pr.debug                        = 0;  % PTB debug configuration1
 pr.eye_tracking.on              = 0;  % do we want to record eye tracking?
                                       % We do not want eye tracking for
                                       % training.
@@ -22,8 +22,10 @@ pr.path.meta                    = AllData.path.meta;
 pr.path.nswitch                 = AllData.path.nswitch;
 pr.path.rating                  = AllData.path.rating;
 
-pr.time.break_duration          = 2;  % break duration in min(!)
-pr.time.wait_task_reminder      = 1.5;  % how long do we want to wait after the task reminder n switch, n back, choice?
+% We don't use the breaks
+%pr.time.break_duration          = 2;  % break duration in min(!)
+
+pr.time.wait_task_reminder      = 1;  % how long do we want to wait after the task reminder n switch, n back, choice?
 
 
 pr.nswitch.checkperformance     = 1;  % SN : after how many rounds do we want to check nswitch performance to reduce ISI
@@ -63,6 +65,7 @@ tr.nswitch.finished(1) = 1;  % set flag when training is finished
 tm.finish.nswitch(1)   = GetSecs; % end time
 
 save(pr.savewhere, 'pr', 'tr', 'tm');  % save calibration config
+
 if(exitflag)
     tm.aborted.nswitch(1) = GetSecs;
     timings = BEC_Timekeeping('nswitch_start',[],tm.start.nswitch(1));
