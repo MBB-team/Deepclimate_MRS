@@ -32,7 +32,7 @@ function [exitflag,timings,AllData] = TASK_InstructionScreens(window,AllData,whi
     AllData.ptb.abortKey    = KbName('Escape');
     AllData.ptb.yesKey      = KbName('y');
     AllData.ptb.noKey       = KbName('n');
-    [timings] = O_present_instructions(AllData, folder, '.TIF');  % show the instructions
+    [timings] = O_present_instructions(AllData, folder, '.png');  % show the instructions
     exitflag = 0;
 
 end %subfunction
