@@ -23,15 +23,8 @@ function [exitflag,timings,AllData] = TASK_InstructionScreens(window,AllData,whi
     %HID NAR BYGRT
     AllData.ptb.leftKey     = KbName('b');
     AllData.ptb.rightKey    = KbName('y');
-  
-    AllData.ptb.topKey      = KbName('UpArrow');
-    AllData.ptb.bottomKey   = KbName('DownArrow');
-    AllData.ptb.spaceKey    = KbName('space');
-    AllData.ptb.returnKey   = KbName('Return');
-    AllData.ptb.returnKey   = AllData.ptb.returnKey(1);
     AllData.ptb.abortKey    = KbName('Escape');
-    AllData.ptb.yesKey      = KbName('y');
-    AllData.ptb.noKey       = KbName('n');
+
     [timings] = O_present_instructions(AllData, folder, '.png');  % show the instructions
     exitflag = 0;
 

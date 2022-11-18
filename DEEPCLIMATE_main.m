@@ -1,8 +1,9 @@
 % DEEPCLIMATE
 % Adopted from GLIOMA
-% Master script for experiment with calibration of delay and mental effort discounting tasks, and follow-up measure.
+% Master script for experiment with calibration of delay and mental effort discounting tasks, n-switch task for inducing fatigue and follow-up measure.
 % BECHAMEL - Battery of Economic CHoices And Mood/Emotion Links
 % RH - November 2021
+% Modified SN - November 2022
 
 %% Set up the experiment
 % Directories
@@ -23,10 +24,12 @@
             exp_settings.n_example_choices = 3; %Minimum number of example choices per choice type
             exp_settings.max_example_choices = 5; %Maximum number of example choices per choice type
             exp_settings.OTG.max_n_inv = 100; %Take all choices into account for model updating
-            %exp_settings.timings.fixation_choice = [0.3 0.5]; %Interval within which a fixation time will be drawn
+            %exp_settings.timings.fixation_choice = [0.3 0.5]; %Interval
+            %within which a fixation time will be drawn, draw choices
+            %slightly faster.
             exp_settings.expdir = expdir; %Experiment directory
             exp_settings.datadir = datadir; %Data saving directory
-        %Adapt the screen appearance to the touchscreen
+        %Adapt the screen appearance for CENIR screen
              exp_settings.font.RatingFontSize = 60; %Larger for the tablet, which has a high PPI
              exp_settings.font.FixationFontSize = 80;
              exp_settings.font.RewardFontSize = 60;
@@ -42,7 +45,7 @@
                 AllData.bookmark = 0; %Indicate progress during the experiment
                 AllData.plugins.touchscreen = 0; %Plugins: Tactile screen (default: no)
             %Get the settings and directories
-                savename = ['DM' AllData.name '_' num2str(AllData.ID) '_' datestr(clock,30)]; %Directory name where the dataset will be saved
+                savename = ['DM_' AllData.name '_' num2str(AllData.ID) '_' datestr(clock,30)]; %Directory name where the dataset will be saved
                 AllData.savedir = [exp_settings.datadir filesep savename]; %Path of the directory where the data will be saved      
                 mkdir(exp_settings.datadir,savename); %Create the directory where the data will be stored
             %First launch settings: create timing event reel, complete the setup
@@ -256,7 +259,7 @@ try
             save([AllData.savedir filesep 'AllData'],'AllData');
    end %if bookmark
 
-%% N-switch TASK
+%% N-switch TASK, Note that N-switch task data is stored in the nswitch folder, the same way as in other fatigue studies.
    if AllData.bookmark == 100  
          path_meta = [AllData.savedir filesep 'meta' filesep];
          if ~exist(path_meta, 'dir')
@@ -298,6 +301,8 @@ try
             for trial = 1:exp_settings.OTG.ntrials_followup
                 [AllData,exitflag] = BEC_OnlineTrialGeneration_VBA(AllData,window);
                 if exitflag; BEC_ExitExperiment(AllData); return; end %Terminate experiment
+                AllData.EventReel = [AllData.EventReel timings]; %Store the recorded timing structure in a list of all events
+
             end
             AllData.bookmark = 7; %Move on to next section
             save([AllData.savedir filesep 'AllData'],'AllData');
