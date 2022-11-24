@@ -112,7 +112,7 @@ try
                     trialinput.Example = 1;      %Is this an example trial? (1:Yes - with extra text / 0:No - minimal text on screen)
                     trialinput.plugins = AllData.plugins;   %Structure containing information about the plugged in devices
                     if i_ex <= exp_settings.n_example_choices
-                        trialinput.SSReward = AllData.Example_Choices.choices_delay(1,i_ex);  %Reward for the uncostly (SS) option (between 0 and 1)
+                        trialinput.SSReward = AllData.Example_Choices.choices_delay(1,i_ex);  %Reward for the uncostly (SS) option (between 0 and 1)                       
                         trialinput.Cost = AllData.Example_Choices.choices_delay(2,i_ex);      %Cost level or the costly (LL) option (between 0 and 1)
                     else
                         trialinput.SSReward = rand;
@@ -291,7 +291,7 @@ try
     if AllData.bookmark == 6
         AllData.Timings.StartOfTaskSession = clock;
         %Show instructions about delay discounting
-            instruction_numbers = 209;
+            instruction_numbers = 208:209;
             [exitflag,timings] = BEC_InstructionScreens(window,AllData,instruction_numbers);
             if exitflag; BEC_ExitExperiment(AllData); return; end %Terminate experiment
             AllData.EventReel = [AllData.EventReel timings]; %Store the recorded timing structure in a list of all events

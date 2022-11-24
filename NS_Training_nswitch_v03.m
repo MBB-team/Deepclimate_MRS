@@ -38,8 +38,8 @@ pr.time.instructions              = [0.15 0.5];  % waiting interval at instructi
 pr.time.after_display_performance = 1.5;  % how long to wait after performance display
 pr.time.show_task_reminder        = 1.5;  % how long to show the reminder before task bloc?
 
-pr.maxblocks = 5;   %How many blocks do we want to run at each niveau
-
+pr.maxblocks_per_diff = 5;
+pr.maxblocks = pr.maxblocks_per_diff*length(pr.switches);   %How many blocks do we want to run in total
 
 %% SETUP PSYCHTOOLBOX
 % =========================================================================
@@ -66,7 +66,7 @@ if condition == 1 %if this is training period (ie subject have never done the ta
     gr = randperm(2);
     
     for g = 1 : 2
-        [nsprac,~,~,exitflag] = NS_task_nswitch_v03(pr, tm, 'pre-practice', 1, 1, 1.2, 990 + gr(g), []);
+        [nsprac,~,~,exitflag] = NS_task_nswitch_v03(pr, tm, 'pre-practice', 1, g, 1.2, 990 + gr(g), []);
         acc = nanmean(nsprac.meanperf(1));  % mean performance in previous run
         text = sprintf('Performance = %.2f %%', acc * 100);  % display performance
         DrawFormattedText(pr.ptb.PTBwindow, text, 'center', 'center', [255, 255, 255]);
@@ -81,25 +81,19 @@ YES = 1; NO = 0;  % Define trial stages
 
 %% RUN TASK
 % =========================================================================
-
+blocknum = 0;
 for difficulty = 1 : length(pr.switches)
     trainingdone = NO;
-    blocknum = 0;
     thisdifficulty = 0;
     while trainingdone == NO
-        
-        blocknum = blocknum + 1;
         thisdifficulty = thisdifficulty + 1;
-      
-        
-        % start slow for the first few blocks defined with checkperformance and then increase the speed in training
+       % start slow for the first one block defined with checkperformance and then increase the speed in training
         if thisdifficulty < checkperformance && condition ==1
             ISI = 1.25;
         else
             ISI = pr.time.ISI;
         end
-        
-        
+        blocknum = blocknum + 1;
         %% run 1 block of 30 s
         [ns,~,~,exitflag] = NS_task_nswitch_v03(pr, tm, pr.conditions{condition}, sessnum, blocknum, pr.time.ISI, pr.switches(difficulty),[]);
         acc(blocknum) = nanmean(ns.meanperf(sessnum, blocknum));
@@ -113,7 +107,7 @@ for difficulty = 1 : length(pr.switches)
         WaitSecs(3);
         Screen('Flip', pr.ptb.PTBwindow);
            
-        if  blocknum < pr.maxblocks %subjects have not done maxblocks in this niveau
+        if  thisdifficulty < pr.maxblocks_per_diff %subjects have not done maxblocks in this niveau
                 trainingdone = NO;
         else %training for a difficulty level is done when 5 blocks are reached.
                         trainingdone = YES;                       
@@ -141,10 +135,10 @@ end
 
 %% Finish
 
-%if condition == 1
-%    question     = pr.ptb.accent.question(1:4,:); %3
-    %questionname = {'Fatigue','Stress','Hunger'};
-%    questionname = {'Fatigue','Stress','Hunger','Motiv'};
-%    O_Rating_v02(['training_Nswitch_finish_niveau_',num2str(pr.switches(difficulty))], pr, tm, question, questionname);
-%end  % if condition 1
+if condition == 1
+    question     = pr.ptb.accent.question(1:4,:); %3
+    questionname = {'Fatigue','Stress','Hunger'};
+    questionname = {'Fatigue','Stress','Hunger','Motiv'};
+   O_Rating_v02(['training_Nswitch_finish_niveau_',num2str(pr.switches(difficulty))], pr, tm, question, questionname);
+end  % if condition 1
 end  % function

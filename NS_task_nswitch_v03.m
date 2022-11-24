@@ -15,6 +15,7 @@ file = dir(searchstring);
 if ~isempty(file)
     last1 = file(end).name;
     load([pr.path.nswitch, last1]);
+
 else
     
     sessmax  = 10; % maximum number of sessions we expect
