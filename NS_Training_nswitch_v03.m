@@ -135,10 +135,10 @@ end
 
 %% Finish
 
-if condition == 1
-    question     = pr.ptb.accent.question(1:4,:); %3
-    questionname = {'Fatigue','Stress','Hunger'};
-    questionname = {'Fatigue','Stress','Hunger','Motiv'};
-   O_Rating_v02(['training_Nswitch_finish_niveau_',num2str(pr.switches(difficulty))], pr, tm, question, questionname);
-end  % if condition 1
+% if condition == 1
+%     question     = pr.ptb.accent.question(1:4,:); %3
+%     questionname = {'Fatigue','Stress','Hunger'};
+%     questionname = {'Fatigue','Stress','Hunger','Motiv'};
+%    O_Rating_v02(['training_Nswitch_finish_niveau_',num2str(pr.switches(difficulty))], pr, tm, question, questionname);
+% end  % if condition 1
 end  % function
