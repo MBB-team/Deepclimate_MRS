@@ -329,7 +329,7 @@ try
 %% End of session 2
     if AllData.bookmark == 8   
         %End of the experiment
-            instruction_numbers = 211;
+            instruction_numbers = 211:212;
             [~,timings] = BEC_InstructionScreens(window,AllData,instruction_numbers);
             AllData.EventReel = [AllData.EventReel timings]; %Store the recorded timing structure in a list of all events
             AllData.Timings.EndOfSession2 = clock;
